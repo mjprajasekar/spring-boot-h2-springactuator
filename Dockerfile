@@ -8,7 +8,6 @@ COPY src ./src
 RUN mvn clean package
 
 FROM maven:3.8.4-openjdk-11
-WORKDIR /application
 
 RUN mkdir /application
 WORKDIR /application
