@@ -1,9 +1,12 @@
-FROM openjdk:8
-VOLUME /tmp
-RUN apt-get update &&\
-   apt-get install -y curl
-RUN mkdir /application
-WORKDIR /application
-COPY target/*.jar /application/app.jar
-EXPOSE 8080
-ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/application/app.jar"]
+# syntax=docker/dockerfile:1
+
+FROM eclipse-temurin:17-jdk-jammy
+
+WORKDIR /app
+
+COPY mvnw pom.xml ./
+RUN ./mvnw dependency:resolve
+
+COPY src ./src
+
+CMD ["./mvnw", "spring-boot:run"]
