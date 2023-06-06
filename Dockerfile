@@ -1,12 +1,9 @@
-# syntax=docker/dockerfile:1
-
-FROM eclipse-temurin:17-jdk-jammy
-
-WORKDIR /app
-
-COPY mvnw pom.xml ./
-RUN ./mvnw dependency:resolve
-
-COPY src ./src
-
-CMD ["./mvnw", "spring-boot:run"]
+FROM openjdk:8-jdk-alpine
+VOLUME /tmp
+ARG JAVA_OPTS
+ENV JAVA_OPTS=$JAVA_OPTS
+COPY target/spring-boot-jpa-h2-0.0.1-SNAPSHOT.jar springbooth2springactuator.jar
+EXPOSE 8080
+ENTRYPOINT exec java $JAVA_OPTS -jar springbooth2springactuator.jar
+# For Spring-Boot project, use the entrypoint below to reduce Tomcat startup time.
+#ENTRYPOINT exec java $JAVA_OPTS -Djava.security.egd=file:/dev/./urandom -jar springbooth2springactuator.jar
